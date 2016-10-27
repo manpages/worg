@@ -7,7 +7,7 @@ We call _t (b a)_ “_Quantifier_”.
 
 The inner foldable layer of Quantifier is intended to store data,
 primarily *TimeRange*s, along with some structure. An example of using
-this generalization is useful is tracking composite Experiences such as
+this generalization is useful is tracking composite experiences such as
 metings. While tracking a meeting, operator or software used to perform
 the meeting can keep track of how long was each participant talking,
 yielding a structure akin to *[(Participant, TimeRange)]*. This data
