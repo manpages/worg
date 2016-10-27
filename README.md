@@ -157,9 +157,11 @@ class (Foldable f, Alternative f) => Sequence f where
 
 We're not sure that it makes sense to include `conj` machinery. In fact,
 we have a hunch that we're solving the same problem of building up the
-state of the universe twice — once by having Monoid instance and
-calling _mappend_ when new Quantifier with the matching foldable inside
-arrived, and once when we're building Sequences out of Quantifiers that
-share a universe and underlying Foldables. Instead we should consider
-using a Semigroup here, populating universes with simple (<>) and
-reworking process of Report construction.
+state of the universe twice — once by having Monoid instance and calling
+_mappend_ when new Quantifier with the matching foldable inside arrived,
+and once when we're building Sequences out of Quantifiers that share a
+universe and underlying Foldables. Instead we should consider using a
+Semigroup here, populating universes with simple (<>) and reworking
+process of Report construction. Now to generate report we require our
+Semigroup to also be Foldable. This way the step of generating Report
+is, as specified in “Meanings” section, just folding a structure.
