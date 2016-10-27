@@ -87,9 +87,45 @@ Which is exactly _fmap_.
 
 μ ∷ (Foldable f, Mergable t) => ∀d∀r . *Report* d r → (f (t d) → r)
 
-Report is a particular fold over reduced (unlifted) _Quantifiers_.
+With Quantifier specified, we see that Report is just a particular fold
+over reduced _Quantifier_s.
 
 ---
 
 type Experience
 type TimeRange
+
+---
+
+Machinery of _worg_ is all about the following functions:
+
+```
+conj ∷ (Alternative f, Foldable f) => a → f a → f a
+conj x xs = pure x <|> xs
+```
+
+This function[1] is to be used while appending Quantifiers, building up a
+Foldable which later will be folded by Report.
+
+---
+
+Footnotes:
+
+[1]:
+
+Work on `conj` function can be taken a step further, describing a subset
+of sequence-like Alternative types with the following rules:
+
+```
+class (Foldable f, Alternative f) => Sequence f where
+  injection ∷ (\x → fold (pure x) = x)
+  iso ∷ (\k xs ys → foldMap k xs <> foldMap k ys = foldMap k (xs <|> ys))
+```
+
+This way we can write the following code, forcing ourselves and other
+users to denote explicitly structures that should follow sequence laws.
+
+```
+class (Foldable f, Alternative f) => Sequence f where
+  conj ∷ a → f a → f a
+```
