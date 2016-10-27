@@ -10,8 +10,8 @@ We call *t b a* _Quantifier_.
 μ ∷ (Foldable b, Mergable t) => ∀a∀d . *Reduce* d → (b a → d) → t b a → t d
 
 Open question — what really is _Reduce_? Looks familiar. Conceptually,
-it's a way to unlift foldables, AHA!, it's a result of a particular fold
-under a Mergable. To get rid oF explicitly defining Reduces, we need to
+it's a way to unlift foldables, AHA! It's a result of a particular fold
+under a Mergable. To get rid of explicitly defining Reduces, we need to
 make Mergables we work with also instances of a Functor.
 
 ---
