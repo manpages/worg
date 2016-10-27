@@ -70,11 +70,11 @@ for example a list:
 ```  
   
 No matter how complex of a system a person uses to describe their life,
-outer monoid layer will be able to eventually be used to populate all
-the universes with folded data, iterating over collected Quantifiers via
-_mappend_. We are using Monoid on the outer layer instead of Semigroup
-because we are mostly working with *TimeRange*s, so notion of zero makes
-sense and corresponds to the 0-length TimeRange.
+outer monoid layer will be able to eventually be used (???!!!) to
+populate all the universes with folded data, iterating over collected
+Quantifiers via _mappend_. We are using Monoid on the outer layer
+instead of Semigroup because we are mostly working with *TimeRange*s, so
+notion of zero makes sense and corresponds to the 0-length TimeRange.
 
 Outer layer also has to be a Functor because in the process of
 generating Reports, we will have to fold and coerce foldable data
@@ -87,10 +87,10 @@ Which is exactly _fmap_.
 
 ---
 
-μ ∷ (Alternative f, Foldable f, Mergable t) => ∀d ∀r . *Report* d r → (f (t d) → r)
+μ ∷ (Alternative f, Foldable f, Monoid t, Functor t) => ∀d ∀r . *Report* d r → (f (t d) → r)
 
 With Quantifier specified, we see that Report is just a particular fold
-over reduced _Quantifier_s.
+over reduced Quantifiers.
 
 ---
 
@@ -112,7 +112,23 @@ conj x xs = pure x <|> xs
 ```
 
 This function[1] is to be used while appending Quantifiers, building up a
-Foldable which later will be folded by Report.
+Foldable which later will be folded by Report. As the result of applying
+*conj*, we get a foldable structure per type carried by Quantifier.
+Quantifiers that carry a raw TimeRange will be placed into one foldable,
+Quantifiers that carry structured data (see our meeting example from
+above) will end up in another foldable. To generate meaningful Reports
+we need to coerce the carried data.
+
+We coerce carried data simply by applying _fmap (fmap $ foldl coerce)_
+to each aformentioned foldable. Return type of _coerce_, clearly,
+matches the type value of the first type variable (d) of *Report* that
+is getting generated.
+
+After foldables are coerced we can merge those into one big sequence and
+finally generate Report going from _f (t d)_ to an arbitrary report type
+_r_, where _f_ is the “big” foldable containing the Quantifiers from a
+single universe, _t_ is the point (???!!!) in this universe and _d_ is
+coerced data.
 
 ---
 
@@ -136,3 +152,14 @@ users to denote explicitly structures that should follow sequence laws.
 class (Foldable f, Alternative f) => Sequence f where
   conj ∷ a → f a → f a
 ```
+
+(???!!!):
+
+We're not sure that it makes sense to include `conj` machinery. In fact,
+we have a hunch that we're solving the same problem of building up the
+state of the universe twice — once by having Monoid instance and
+calling _mappend_ when new Quantifier with the matching foldable inside
+arrived, and once when we're building Sequences out of Quantifiers that
+share a universe and underlying Foldables. Instead we should consider
+using a Semigroup here, populating universes with simple (<>) and
+reworking process of Report construction.
