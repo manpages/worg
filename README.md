@@ -1,6 +1,8 @@
 Worg Denotational Semantics
 ===
 
+### Meanings
+
 μ ∷ (Foldable b, Monoid t, Functor t) => ∀a . *Quantification* → (Experience → t (b a))
 
 We call _t (b a)_ “_Quantifier_”.
@@ -92,10 +94,15 @@ over reduced _Quantifier_s.
 
 ---
 
+### Types
+
 type Experience
+
 type TimeRange
 
 ---
+
+### Functions
 
 Machinery of _worg_ is all about the following functions:
 
@@ -109,7 +116,7 @@ Foldable which later will be folded by Report.
 
 ---
 
-Footnotes:
+### Footnotes
 
 [1]:
 
