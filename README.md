@@ -81,13 +81,13 @@ generating Reports, we will have to fold and coerce foldable data
 carried by Quantifiers, so if the outer layer isn't also a Functor, we
 will end up with the following:
 
-μ ∷ (Foldable b, Monoid t) => ∀a∀d . *Reduce* d → (b a → d) → t (b a) → t d
+μ ∷ (Foldable b, Monoid t) => ∀a ∀d . *Reduce* d → (b a → d) → t (b a) → t d
 
 Which is exactly _fmap_.
 
 ---
 
-μ ∷ (Foldable f, Mergable t) => ∀d∀r . *Report* d r → (f (t d) → r)
+μ ∷ (Alternative f, Foldable f, Mergable t) => ∀d ∀r . *Report* d r → (f (t d) → r)
 
 With Quantifier specified, we see that Report is just a particular fold
 over reduced _Quantifier_s.
